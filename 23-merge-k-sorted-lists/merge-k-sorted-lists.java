@@ -10,18 +10,18 @@
  */
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        int idx = -1;
         int min = Integer.MAX_VALUE;
+        int idx = -1;
         for(int i = 0; i < lists.length; i++){
-            if(lists[i] != null && min > lists[i].val){
-                min = lists[i].val;
+            if(lists[i] != null && lists[i].val < min){
                 idx = i;
+                min = lists[i].val;
             }
         }
         if(idx == -1) return null;
-        ListNode head = lists[idx];
-        lists[idx] = lists[idx].next;
-        head.next = mergeKLists(lists);
-        return head;
+            ListNode head = lists[idx];
+            lists[idx] = lists[idx].next;
+            head.next = mergeKLists(lists);
+            return head;
     }
 }
