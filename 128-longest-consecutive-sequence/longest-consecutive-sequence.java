@@ -1,24 +1,23 @@
 class Solution {
-    public int longestConsecutive(int[] nums) {
-        TreeMap<Integer, Integer> map = new TreeMap<>();
-        if(nums.length == 0) return 0;
+  public int longestConsecutive(int[] nums) {
+      Set<Integer> set = new HashSet<>();
+      for(int i = 0; i< nums.length; i++){
+        set.add(nums[i]);
+      }
+      int curr = 1, max = 1;
+      if(nums.length == 0 || nums.length == 1) return nums.length;
 
-        for(int i = 0; i < nums.length; i++){
-          map.put(nums[i], map.getOrDefault(nums[i], 0)+1);
-        }
-
-        int ans = 1, max = 1;
-        
-        List<Integer> keys = new ArrayList<>(map.keySet());
-        
-        for(int i =0; i < keys.size()-1; i++){
-          if(keys.get(i)+1 == keys.get(i+1)){
-            ans++;
-          }else{
-            ans = 1;
+      for(Integer num : set){
+        if(!set.contains(num-1)){
+          int currnetNum = num;
+          while(set.contains(currnetNum+1)){
+            currnetNum++;
+            curr++;
           }
-          max = Math.max(max, ans);
+          max = Math.max(max, curr);
+          curr = 1;
         }
-        return max;
-    }
+      }
+      return max;
+  }
 }
