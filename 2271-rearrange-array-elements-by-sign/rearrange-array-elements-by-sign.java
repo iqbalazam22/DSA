@@ -1,19 +1,16 @@
 class Solution {
     public int[] rearrangeArray(int[] nums) {
-        int len = nums.length;
-        int[] pArr = new int[len/2];
-        int[] nArr = new int[len/2];
-        int nIdx = 0;
-        int pIdx = 0;
-        for(int i = 0; i < len; i++){
-            if(nums[i] < 0) nArr[nIdx++] = nums[i];
-            else pArr[pIdx++] = nums[i];
-        }
-        int a = 0, b = 0;
-        int[] arr = new int[len];
-        for(int i = 0; i < nums.length; i+=2){
-            arr[i] = pArr[a++];
-            arr[i+1] = nArr[b++];
+        int arr[] = new int[nums.length];
+        int even = 0;
+        int odd = 1;
+        for(int i = 0; i < nums.length; i++){
+            if(nums[i] < 0){
+                arr[odd] = nums[i];
+                odd+=2;
+            }else{
+                arr[even] = nums[i];
+                even+=2;
+            }
         }
         return arr;
     }
