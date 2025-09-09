@@ -1,24 +1,16 @@
 class Solution {
     public int singleNumber(int[] nums) {
-        int bits[] = new int[32];
-        for(int i = 0; i < nums.length; i++){
-            for(int j = 0; j < 32; j++){
-                bits[j] += (nums[i] >> j) & 1;
-            }
-        }
-        for(int j = 0; j < 32; j++){
-            bits[j] %= 3;
-        }
+        Arrays.sort(nums);
+        int n = nums.length;
         int ans = 0;
-        for(int j = 0; j < 32; j++){
-            ans = ans + (bits[j] * square(2, j));
-        }
-        return ans;
-    }
-    public int square(int num, int power){
-        int ans = 1;
-        for(int i = 1; i <= power; i++){
-            ans = ans*num;
+        if(n == 1) ans = nums[0];
+        for(int i = 0; i < n; i++){
+            int left = (i-1+n)%n;
+            int right = (i+1+n)%n;
+            if(nums[i]!=nums[left] && nums[i]!=nums[right]){
+                ans = nums[i];
+                break;
+            }
         }
         return ans;
     }
