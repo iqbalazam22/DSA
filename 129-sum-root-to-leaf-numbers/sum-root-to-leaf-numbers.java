@@ -17,21 +17,14 @@ class Solution {
     int count = 0;
     int sum = 0;
     public int sumNumbers(TreeNode root) {
-        if(root == null) {
-            return 0;
-        }
-        
-        
+        if(root == null) return 0;
         count = count * 10 + root.val;
-        
-        if(root.left == null && root.right == null){ 
+        if(root.left == null && root.right == null){
             sum += count;
         }
-
-        int left = sumNumbers(root.left);
-        int right = sumNumbers(root.right);
-        count /= 10;
-
+        sumNumbers(root.right);
+        sumNumbers(root.left);
+        count = count / 10;
         return sum;
     }
 }
