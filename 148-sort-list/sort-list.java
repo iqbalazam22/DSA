@@ -1,28 +1,41 @@
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
 class Solution {
     public ListNode sortList(ListNode head) {
-        if(head == null) return null;
-        List<ListNode> list = new ArrayList<>();
-        ListNode temp = head;
-        while(temp != null){
-            list.add(temp);
-            temp = temp.next;
+        if (head == null || head.next == null) return head;
+        // find mid
+        ListNode fast = head.next;
+        ListNode slow = head;
+        while(fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
         }
-        Collections.sort(list, (a, b)-> a.val - b.val);
-        for(int i = 0; i < list.size()-1; i++){
-            list.get(i).next = list.get(i+1);
+        ListNode mid = slow.next;
+        slow.next = null;
+        
+        ListNode left = sortList(head);
+        ListNode right = sortList(mid);
+
+        return merge(left, right);
+
+    }
+    public ListNode merge(ListNode left, ListNode right){
+        ListNode dummy = new ListNode();
+        ListNode tail = dummy;
+
+        while(left != null && right != null){
+           if (left.val < right.val) {
+                tail.next = left;
+                left = left.next;
+            } else {
+                tail.next = right;
+                right = right.next;
+            }
+            tail = tail.next;
         }
-        list.get(list.size() - 1).next = null;
-        head = list.get(0);
-        return head;
+        if (left != null) {
+            tail.next = left;
+        } else {
+            tail.next = right;
+        }
+        return dummy.next;
     }
 }
