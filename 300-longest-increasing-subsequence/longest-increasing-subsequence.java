@@ -1,27 +1,21 @@
 class Solution {
-    int dp[][];
-    public int recur(int curr, int idx, int nums[]){
-        if(idx == nums.length) return 0;
-
-        if(dp[idx][curr+1] != -1) return dp[idx][curr+1];
-        
-        int op1 = 0;
-        int op2 = 0;
-
-        if(curr == -1 || nums[curr] < nums[idx]){
-            op1 = 1 + recur(idx, idx+1, nums);
-        }
-        op2 = recur(curr, idx+1, nums);
-        int ans = Math.max(op1, op2);
-        dp[idx][curr+1] = ans;
-        return ans;
-    }
     public int lengthOfLIS(int[] nums) {
         int n = nums.length;
-        dp = new int[n][n+1];
+        int dp[] = new int[n];
+
+        dp[0] = 1;
+        int finalAns = 0;
+        int currentAns = 1;
         for(int i = 0; i < n; i++){
-            for(int j = 0; j <= n; j++) dp[i][j] = -1;
+            currentAns = 1;
+            for(int j = 0; j < i; j++){
+                if(nums[i] > nums[j]){
+                    currentAns = Math.max(currentAns, 1 + dp[j]);
+                }
+            }
+            dp[i] = currentAns;
+            finalAns = Math.max(finalAns, currentAns);
         }
-        return recur(-1, 0, nums);
+        return finalAns;
     }
 }
