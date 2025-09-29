@@ -1,20 +1,20 @@
 class Solution {
     int dp[][];
-    public int recur(int curr, int idx, int[] nums){
+    public int recur(int curr, int idx, int nums[]){
         if(idx == nums.length) return 0;
+
         if(dp[idx][curr+1] != -1) return dp[idx][curr+1];
-        int ans1 = 0;
-        int ans2 = 0;
         
+        int op1 = 0;
+        int op2 = 0;
+
         if(curr == -1 || nums[curr] < nums[idx]){
-            ans1 = 1 + recur(idx, idx+1, nums);
+            op1 = 1 + recur(idx, idx+1, nums);
         }
-        ans2 = recur(curr, idx+1, nums);
-        
-        int ans = Math.max(ans1, ans2);
+        op2 = recur(curr, idx+1, nums);
+        int ans = Math.max(op1, op2);
         dp[idx][curr+1] = ans;
         return ans;
-
     }
     public int lengthOfLIS(int[] nums) {
         int n = nums.length;
