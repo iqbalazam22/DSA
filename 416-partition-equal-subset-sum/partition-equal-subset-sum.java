@@ -1,28 +1,25 @@
 class Solution {
     Boolean dp[][];
+    public boolean recur(int idx, int target, int nums[]){
 
-    public boolean recur(int i, int target, int nums[]) {
-        if (target == 0) return true;               // found subset
-        if (i >= nums.length || target < 0) return false; // invalid case
+        if(target == 0) return true;
 
-        if (dp[i][target] != null) return dp[i][target];
+        if (idx >= nums.length || target < 0) return false;
 
-        // try taking nums[i] or skipping it
-        boolean take = recur(i + 1, target - nums[i], nums);
-        boolean skip = recur(i + 1, target, nums);
+        if(dp[idx][target] != null) return dp[idx][target];
+        
+        boolean take = recur(idx+1, target-nums[idx], nums);
+        boolean skip = recur(idx+1, target, nums);
 
-        return dp[i][target] = take || skip;
+        return dp[idx][target] = take || skip;
     }
-
     public boolean canPartition(int[] nums) {
-        int total = 0;
-        for (int x : nums) total += x;
+        int target = 0;
+        for(int i : nums) target+=i;
+        if(target % 2 != 0) return false;
+        target /= 2;
 
-        if (total % 2 != 0) return false; // odd sum can't be partitioned
-
-        int target = total / 2;
-        dp = new Boolean[nums.length][target + 1];
-
+        dp = new Boolean[nums.length+1][target+1];
         return recur(0, target, nums);
     }
 }
