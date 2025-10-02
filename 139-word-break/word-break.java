@@ -7,13 +7,14 @@ class Solution {
         if(dp[idx] != null) return dp[idx];
 
         boolean ans = false;
-        
+
         for(int i = idx; i < s.length(); i++){
             String str = s.substring(idx, i+1);
 
             if(set.contains(str)){
                 if(recur(i+1, s)){
                     ans = true;
+                    break;
                 }
             }
         }
