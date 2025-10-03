@@ -16,12 +16,13 @@
 class Solution {
     int dp[];
     List<Integer> list;
-    Map<Integer, Integer> map;
+    int lev = -1;
     public void recur(int level, TreeNode root){
         if(root == null) return;
 
-        if(!map.containsKey(level)){
-            map.put(level, root.val);
+        if(lev < level){
+            list.add(root.val);
+            lev = level;
         }
         recur(level+1, root.right);
         recur(level+1, root.left);
@@ -30,11 +31,8 @@ class Solution {
     }
     public List<Integer> rightSideView(TreeNode root) {
         list  = new ArrayList<>();
-        map = new TreeMap<>();
         recur(0, root);
-        for(Integer key : map.keySet()){
-            list.add(map.get(key));
-        }
+        
         return list;
     }
 }
