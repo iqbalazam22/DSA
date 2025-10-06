@@ -22,7 +22,8 @@ class Solution {
             temp = temp.next;
             count++;
         }
-        k = (k + count) % count;
+        k = k % count;
+        if(k == 0) return head;
         for(int i = 0; i < k; i++) fast = fast.next;
 
         while(fast.next != null){
