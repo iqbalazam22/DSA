@@ -1,42 +1,36 @@
+import java.util.*;
+
 class MedianFinder {
-    private PriorityQueue<Integer> small; // Max-heap
-    private PriorityQueue<Integer> large; // Min-heap
+    private PriorityQueue<Integer> leftMaxHeap;  // Max-heap for smaller half
+    private PriorityQueue<Integer> rightMinHeap; // Min-heap for larger half
 
     public MedianFinder() {
-        small = new PriorityQueue<>(Collections.reverseOrder());
-        large = new PriorityQueue<>();
+        leftMaxHeap = new PriorityQueue<>(Collections.reverseOrder());
+        rightMinHeap = new PriorityQueue<>();
     }
     
     public void addNum(int num) {
-        small.add(num);
+        // Step 1: Add to left (max-heap) first
+        leftMaxHeap.add(num);
 
-        // Step 2: Maintain order — all small <= all large
-        if (!small.isEmpty() && !large.isEmpty() && small.peek() > large.peek()) {
-            large.add(small.poll());
+        // Step 2: Move top of left to right if violated order property
+        if (!leftMaxHeap.isEmpty() && !rightMinHeap.isEmpty()
+                && leftMaxHeap.peek() > rightMinHeap.peek()) {
+            rightMinHeap.add(leftMaxHeap.poll());
         }
 
-        // Step 3: Balance size
-        if(small.size() > large.size() + 1){
-            large.add(small.remove());
-        }else if(large.size() > small.size()){
-            small.add(large.remove());
+        // Step 3: Balance sizes (difference ≤ 1)
+        if (leftMaxHeap.size() > rightMinHeap.size() + 1) {
+            rightMinHeap.add(leftMaxHeap.poll());
+        } else if (rightMinHeap.size() > leftMaxHeap.size()) {
+            leftMaxHeap.add(rightMinHeap.poll());
         }
     }
     
     public double findMedian() {
-        if(small.size() == large.size()){
-            double ans = (small.peek() + large.peek() ) / 2.0;
-            return ans;
-        }else{
-            double ans = small.peek();
-            return ans;
+        if (leftMaxHeap.size() == rightMinHeap.size()) {
+            return (leftMaxHeap.peek() + rightMinHeap.peek()) / 2.0;
         }
+        return leftMaxHeap.peek();
     }
 }
-
-/**
- * Your MedianFinder object will be instantiated and called as such:
- * MedianFinder obj = new MedianFinder();
- * obj.addNum(num);
- * double param_2 = obj.findMedian();
- */
