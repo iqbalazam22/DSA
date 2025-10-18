@@ -1,36 +1,31 @@
-import java.util.*;
-
 class MedianFinder {
-    private PriorityQueue<Integer> leftMaxHeap;  // Max-heap for smaller half
-    private PriorityQueue<Integer> rightMinHeap; // Min-heap for larger half
+
+    PriorityQueue<Integer> min;
+    PriorityQueue<Integer> max;
 
     public MedianFinder() {
-        leftMaxHeap = new PriorityQueue<>(Collections.reverseOrder());
-        rightMinHeap = new PriorityQueue<>();
+        min = new PriorityQueue<>(Collections.reverseOrder());
+        max = new PriorityQueue<>();
     }
     
     public void addNum(int num) {
-        // Step 1: Add to left (max-heap) first
-        leftMaxHeap.add(num);
+        min.add(num);
 
-        // Step 2: Move top of left to right if violated order property
-        if (!leftMaxHeap.isEmpty() && !rightMinHeap.isEmpty()
-                && leftMaxHeap.peek() > rightMinHeap.peek()) {
-            rightMinHeap.add(leftMaxHeap.poll());
-        }
+        if(!min.isEmpty() && !max.isEmpty() && min.peek() > max.peek())  max.add(min.remove());
 
-        // Step 3: Balance sizes (difference ≤ 1)
-        if (leftMaxHeap.size() > rightMinHeap.size() + 1) {
-            rightMinHeap.add(leftMaxHeap.poll());
-        } else if (rightMinHeap.size() > leftMaxHeap.size()) {
-            leftMaxHeap.add(rightMinHeap.poll());
-        }
+        if(min.size() > max.size()+1) max.add(min.remove());
+        else if(max.size() > min.size()) min.add(max.remove());
     }
     
     public double findMedian() {
-        if (leftMaxHeap.size() == rightMinHeap.size()) {
-            return (leftMaxHeap.peek() + rightMinHeap.peek()) / 2.0;
-        }
-        return leftMaxHeap.peek();
+        if(min.size() == max.size()) return (min.peek() + max.peek()) / 2.0;
+        else return min.peek();
     }
 }
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder obj = new MedianFinder();
+ * obj.addNum(num);
+ * double param_2 = obj.findMedian();
+ */
