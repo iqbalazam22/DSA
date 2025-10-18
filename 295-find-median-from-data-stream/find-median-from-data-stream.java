@@ -1,7 +1,7 @@
 class MedianFinder {
 
-    PriorityQueue<Integer> min;
-    PriorityQueue<Integer> max;
+    PriorityQueue<Integer> min;  // max heap means ki large uper rahega
+    PriorityQueue<Integer> max;  // min heap means ki small uper rahega
 
     public MedianFinder() {
         min = new PriorityQueue<>(Collections.reverseOrder());
