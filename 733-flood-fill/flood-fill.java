@@ -1,28 +1,23 @@
 class Solution {
-    public void recur(int[][] image, int i, int j, int srcC, int color, int m, int n){
-        
-        if(i < 0 || j < 0 || i >= m || j >= n) return;
+    public void recur(int[][] image, int i, int j, int color, int gCol){
+        if(i < 0 || j < 0 || i >= image.length || j >= image[0].length) return;
 
-        if(image[i][j] != srcC) return;
+        if(image[i][j] != gCol) return;
 
         image[i][j] = color;
 
-        recur(image, i+1, j, srcC, color, m, n);
-        recur(image, i-1, j, srcC, color, m, n);
-        recur(image, i, j+1, srcC, color, m, n);
-        recur(image, i, j-1, srcC, color, m, n);
+        recur(image, i+1, j, color, gCol);
+        recur(image, i-1, j, color, gCol);
+        recur(image, i, j+1, color, gCol);
+        recur(image, i, j-1, color, gCol);
 
         return;
-
     }
+
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
-        int m = image.length;
-        int n = image[0].length;
-
-        int srcC = image[sr][sc];
-
-        if(image[sr][sc] != color){
-            recur(image, sr, sc, srcC, color, m, n);
+        int colour = image[sr][sc];
+        if(colour != color){
+            recur(image, sr, sc, color, colour);
         }
         return image;
     }
